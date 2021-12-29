@@ -1,0 +1,94 @@
+{
+  "main": {
+    "id": "7d6fde8f688a0d22",
+    "type": "split",
+    "children": [
+      {
+        "id": "277064a5e97ba47c",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "README.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "58642df9fcb3b1d3",
+    "type": "split",
+    "children": [
+      {
+        "id": "3f98d31b91386c05",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4fb5ee256c1fbcfb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "75b7fcb1eea428a9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "22d08944ef845f74",
+    "type": "split",
+    "children": [
+      {
+        "id": "9775eed8ad839d97",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1451541bd7f0e507",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "277064a5e97ba47c",
+  "lastOpenFiles": [
+    "README.md",
+    "doc/grammar-for-query-Screen-Shot-2021-12-28-at-4.53.56-PM.png"
+  ]
+}

@@ -1,5 +1,6 @@
 #!/usr/bin/env swipl
 :-initialization(query,main).
+:- use_module(library(http/json)).
 
 
 ?- consult(fb).
