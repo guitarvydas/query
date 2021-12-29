@@ -1,0 +1,109 @@
+#!/usr/bin/env swipl
+:-initialization(query,main).
+
+
+?- consult(fb).
+isellipse(X):-das_fact(kind,X,"ellipse").
+istext(X):-das_fact(kind,X,"text").
+isrect(X):-das_fact(kind,X,"rectangle").
+isedge(X):-das_fact(kind,X,"edge").
+
+	      
+onSameDiagram(A,B):-
+    diagramContains(D,A),
+    diagramContains(D,B).
+    
+diagramContains(D,X):-
+    diagram_fact(contains,D,X).
+
+% succeeds only if B's bounding box is fully inside A's bounding box, inclusively
+completelyInside(B,A):-
+    das_fact(bbL,B,Bl),
+    das_fact(bbT,B,Bt),
+    das_fact(bbR,B,Br),
+    das_fact(bbB,B,Bb),
+    das_fact(bbL,A,Al),
+    das_fact(bbT,A,At),
+    das_fact(bbR,A,Ar),
+    das_fact(bbB,A,Ab),
+    Bl >= Al,
+    Bl =< Ar,
+    Br >= Al,
+    Br =< Ar,
+    Bt >= At,
+    Bt =< Ab,
+    Bb >= At,
+    Bb =< Ab.
+    
+inferName(ID):-
+    diagram_fact(vertex,ID,_),
+    diagram_fact(value,ID,Name),
+    assertz(das_fact(name,ID,Name)).
+
+nameof(ID,Name):-
+    das_fact(name,ID,Name),
+    \+ das_fact(color,ID,"red").
+nameof(ID,"-"):-
+    das_fact(name,ID,_),
+    das_fact(color,ID,"red").
+nameof(ID,ID):-
+    \+ das_fact(name,ID,_),
+    \+ das_fact(color,ID,"red").
+:-dynamic das_fact/3.
+
+inferPort(X):-
+    diagram_fact(kind,X,"ellipse"),
+    das_fact(color,X,"green"),
+    assertz(das_fact(direction,X,input)),
+    assertz(das_fact(inputport,X,"-")).
+inferPort(X):-
+    diagram_fact(kind,X,"ellipse"),
+    das_fact(color,X,"yellow"),
+    assertz(das_fact(direction,X,output)),
+    assertz(das_fact(outputport,X,"-")).
+inferPort(X):-
+    diagram_fact(kind,X,"ellipse"),
+    das_fact(color,X,"red"),
+    assertz(das_fact(direction,X,pervasiveinput)),
+    assertz(das_fact(pervasiveinputport,X,"-")).
+inferPort(X):-
+    diagram_fact(kind,X,"ellipse"),
+    das_fact(color,X,"purple"),
+    assertz(das_fact(direction,X,pervasiveoutput)),
+    assertz(das_fact(pervasiveoutputport,X,"-")).
+
+portHasDirection(X):-
+    das_fact(inputport,X,_).
+portHasDirection(X):-
+    das_fact(outputport,X,_).
+portHasDirection(X):-
+    das_fact(pervasiveinputport,X,_).
+portHasDirection(X):-
+    das_fact(pervasiveoutputport,X,_).
+
+checkPortHasDirection(X):-
+    \+ portHasDirection(X),
+    format("FATAL: port ~w does not have a direction~n",[X]).
+
+inferPortDirections:-
+    bagof(X,(diagram_fact(kind,X,"ellipse"),inferPort(X)),_).
+
+designRulePortsHaveDirection:-
+    forall(diagram_fact(kind,X,"ellipse"),
+	   checkPortHasDirection(X)).
+contains(X,Y):-
+    diagram_fact(contains,X,Y).
+contains(X,Y):-
+    completelyInside(Y,X),
+    X \= Y,
+    \+ diagram_fact(contains,X,Y).
+
+query_helper(ID,Name):-
+    diagram_fact(vertex,ID,_),
+    diagram_fact(value,ID,Name),
+    true.
+query:-
+    bagof([ID,Name],query_helper(ID,Name),Bag),
+    json_write(user_output,Bag,[width(128)]),
+    halt.
+
